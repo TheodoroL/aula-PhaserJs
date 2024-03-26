@@ -46,10 +46,10 @@ import Phaser from '../lib/phaser.js'
        this.cameras.main.setDeadzone(this.scale.width*1.5);
        
        
-       this.player.body.checkCollision.up = false; 
-       this.player.body.checkCollision.down = false; 
-       this.player.body.checkCollision.left = false; 
-       this.player.body.checkCollision.right = false; 
+    //    this.player.body.checkCollision.up = false; 
+    //    this.player.body.checkCollision.down = false; 
+    //    this.player.body.checkCollision.left = false; 
+    //    this.player.body.checkCollision.right = false; 
        
         //camera vai começar seguir o player
         this.cameras.main.startFollow(this.player);
@@ -64,7 +64,7 @@ import Phaser from '../lib/phaser.js'
             const platform = child; 
             const scrollY = this.cameras.main.scrollY; 
             if(platform.y >= scrollY+700){
-                platform.y = scrollY -  Phaser.main.scrollY; 
+                platform.y = scrollY - Phaser.Math.Between(50, 100); 
                 platform.body.updateFromGameObject(); 
             }
         })
