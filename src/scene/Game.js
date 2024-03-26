@@ -12,7 +12,9 @@ import Phaser from '../lib/phaser.js'
         this.load.image("platform",  "./src/assets/ground_grass.png"); 
         this.load.image("bunny-stand", "./src/assets/bunny1_stand.png"); 
         
-    }  
+    } 
+    /** @type {Phaser.Physics.Arcade.Sprite} */
+    player
     create(){
         this.add.image(240, 320, 'background'); 
         //
@@ -29,12 +31,20 @@ import Phaser from '../lib/phaser.js'
             body.updateFromGameObject(); 
         }
         //criar o jogador
-        const player = this.physics.add.sprite(240, 320, 'bunny-stand').setScale(0.5);
+        this.player = this.physics.add.sprite(240, 320, 'bunny-stand').setScale(0.5);
        // colidir com a plataforma
-       this.physics.add.collider(platforms, player); 
+       this.physics.add.collider(platforms, this.player); 
     }
 
     update(){
+        
+// descubra no Arcade Physics se o corpo físico do jogador
+ // está tocando algo abaixo dele
+        const touchingDown = this.player.body.touching.down; 
+        if(touchingDown){
+            // isso faz o coelho pular para cima
+            this.player.setVelocityY(-300); 
+        }
   
     }
 }
