@@ -6,12 +6,15 @@ import Phaser from '../lib/phaser.js'
 
     super('game'); 
     }
+    /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
+    cursors
 
     preload(){
         this.load.image("background","./src/assets/bg_layer1.png"); 
         this.load.image("platform",  "./src/assets/ground_grass.png"); 
         this.load.image("bunny-stand", "./src/assets/bunny1_stand.png"); 
         
+        this.cursors = this.input.keyboard.createCursorKeys(); 
     } 
     /** @type {Phaser.Physics.Arcade.Sprite} */
     player
@@ -38,6 +41,9 @@ import Phaser from '../lib/phaser.js'
         this.player = this.physics.add.sprite(240, 320, 'bunny-stand').setScale(0.5);
        // colidir com a plataforma
        this.physics.add.collider(this.platforms, this.player);
+
+       this.cameras.main.startFollow(this.player); 
+       this.cameras.main.setDeadzone(this.scale.width*1.5);
        
        
        this.player.body.checkCollision.up = false; 
@@ -49,7 +55,7 @@ import Phaser from '../lib/phaser.js'
         this.cameras.main.startFollow(this.player);
     }
 
-    update(){
+    update(t, dt){
         // Este código em Phaser itera sobre as plataformas do jogo.
         // Se alguma plataforma estiver mais de 700 pixels abaixo da câmera principal, 
         // ajusta sua posição vertical para uma altura mais próxima da câmera. Isso corrige a posição das plataformas que caíram muito abaixo da tela.
@@ -69,6 +75,21 @@ import Phaser from '../lib/phaser.js'
     if(touchingDown){
         // isso faz o coelho pular para cima
         this.player.setVelocityY(-300); 
+    }; 
+    //  movimentação do player
+    // ------------------------------
+    //direita
+    if(this.cursors.left.isDown && !touchingDown){
+        this.player.setVelocityX(-200); 
+    
+    }
+    // direita
+    else if(this.cursors.right.isDown && !touchingDown){
+        this.player.setVelocityX(200); 
+
+    } 
+    else{
+        this.player.setVelocityX(0); 
     }
 }
 }
